@@ -7,7 +7,25 @@ from astropy.io import fits
 import os
 import utils as utl
 
-def order_poly_fit(filename, yorder):
+def order_poly_fit(path, filename, yorder=725):
+    """
+    Parameters:
+    -----------
+    path : str
+        path of the given fits file
+    filename : str
+        name of the fits file
+    yorder : int
+        position of required order in
+        terms of row number
+        default is 725, equivalent to
+        104th order.
+    -----------
+    returns
+    -----------
+    numpy.ndarray
+        position of order in terms of y axis
+    """
     hdul = fits.open(filename)
     h11 = hdul[2].data
     h22 = np.transpose(h11)
@@ -20,4 +38,7 @@ def order_poly_fit(filename, yorder):
         bb = np.where(d11 == maxi)
         maximum = np.hstack((maximum, bb[0]))
     popt, pcov = cft(utl.cubic, points, maximum)
-    return popt
+    xx1 = np.arange(len(data_order[0]))
+    yy1 = utl.cubic(xx1, *popt)
+    ydata = yy1 + yorder
+    return ydata
