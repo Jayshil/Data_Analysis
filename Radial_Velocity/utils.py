@@ -7,6 +7,10 @@ from astropy.io import fits
 import os
 import re
 
+#------------------------------------------------------------------
+#---------------------Basic Polynomials----------------------------
+#------------------------------------------------------------------
+
 def cubic(x, a, b, c, d):
     cc = a + b*x + c*(x**2) + d*(x**3)
     return cc
@@ -31,3 +35,13 @@ def natural_keys(text):
     (See Toothy's implementation in the comments)
     '''
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+
+#------------------------------------------------------------------
+#---------------------Negative Gaussian----------------------------
+#------------------------------------------------------------------
+
+def neg_gaus(x, mu, sig, const, aa):
+    yy = np.exp(-0.5*((x-mu)/sig)**2)
+    zz = -aa*yy + const
+    return zz
