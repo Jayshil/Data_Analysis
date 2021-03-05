@@ -58,7 +58,13 @@ def selection(loc, flux_file):
         fl1 = fl[aa:bb]
         fle1 = fle[aa:bb]
         #xinit = np.array([fl1[0], 1, 1, 1])
-        xinit = np.array([(pix1[0] + pix1[-1])/2, 1, 1, 1])
+        #"""
+        mini = np.min(fl1)
+        mini1 = np.where(fl1 == mini)
+        #mid_pix.append(pix1[mini1[0][0]])
+        #"""
+        xinit = np.array([pix1[mini1[0][0]], pix1[-1]-pix1[0], 1, 1])
+        #xinit = np.array([(pix1[0] + pix1[-1])/2, 1, 1, 1])
         def min_log_likelihood(x):
             #model = utl.cubic(pix1, x[0], x[1], x[2], x[3])
             model = utl.neg_gaus(pix1, x[0], x[1], x[2], x[3])
@@ -67,15 +73,10 @@ def selection(loc, flux_file):
             yy = np.sum(np.log(fle1)) + 0.5*chi22
             return yy
         soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
-        #"""
-        mini = np.min(fl1)
-        mini1 = np.where(fl1 == mini)
-        mid_pix.append(pix1[mini1[0][0]])
-        #"""
-        #mid_pix.append(soln.x[0])
-        #plt.errorbar(pix, fl, yerr=fle)
-        #plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]))
-        #plt.show()
+        mid_pix.append(soln.x[0])
+        plt.errorbar(pix, fl, yerr=fle)
+        plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]))
+        plt.show()
     return mid_pix
 
 p22 = os.getcwd() + '/Radial_Velocity/Results/'
@@ -91,7 +92,7 @@ list2.sort(key=utl.natural_keys)
 
 #print(list2)
 
-f22 = open(p22 + 'positions.dat', 'w')
+f22 = open(p22 + 'positions_1.dat', 'w')
 
 for j in range(len(list2)):
     mid_pix1 = selection(p22, list2[j])
