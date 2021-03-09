@@ -10,6 +10,7 @@ import utils as utl
 import astropy.units as u
 import shutil
 from scipy.optimize import minimize as mz
+from scipy.optimize import curve_fit as cft
 
 def selection(loc, flux_file):
     # Reading the data
@@ -63,7 +64,7 @@ def selection(loc, flux_file):
         mini1 = np.where(fl1 == mini)
         #mid_pix.append(pix1[mini1[0][0]])
         #"""
-        xinit = np.array([pix1[mini1[0][0]], pix1[-1]-pix1[0], 1, 1])
+        xinit = np.array([pix1[mini1[0][0]], pix1[-1]-pix1[0], fl1[0], 1])
         #xinit = np.array([(pix1[0] + pix1[-1])/2, 1, 1, 1])
         def min_log_likelihood(x):
             #model = utl.cubic(pix1, x[0], x[1], x[2], x[3])
@@ -74,9 +75,9 @@ def selection(loc, flux_file):
             return yy
         soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
         mid_pix.append(soln.x[0])
-        plt.errorbar(pix, fl, yerr=fle)
+        plt.errorbar(pix, fl, yerr=fle, color='orangered')
         plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]))
-        plt.show()
+    plt.show()
     return mid_pix
 
 p22 = os.getcwd() + '/Radial_Velocity/Results/'
@@ -90,12 +91,14 @@ for i in range(len(list1)):
 
 list2.sort(key=utl.natural_keys)
 
-#print(list2)
-
 f22 = open(p22 + 'positions_1.dat', 'w')
 
 for j in range(len(list2)):
     mid_pix1 = selection(p22, list2[j])
-    f22.write(str(mid_pix1[0]) + '\t' + str(mid_pix1[1]) + '\n')
+    if len(mid_pix1) == 0:
+        break
+    for k in range(len(mid_pix1)):
+        f22.write(str(mid_pix1[k]) + '\t')
+    f22.write('\n')
 
 f22.close()
