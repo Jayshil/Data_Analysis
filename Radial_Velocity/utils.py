@@ -50,3 +50,8 @@ def neg_gaus1(x, mu, sig, aa):
     yy = np.exp(-0.5*((x-mu)/sig)**2)
     zz = -aa*yy
     return zz
+
+def gaus(x, mu, sig, const, aa):
+    yy = np.exp(-0.5*((x-mu)/sig)**2)
+    zz = aa*yy + const
+    return zz
