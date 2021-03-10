@@ -75,8 +75,8 @@ def selection(loc, flux_file):
             return yy
         soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
         mid_pix.append(soln.x[0])
-        plt.errorbar(pix, fl, yerr=fle, color='orangered')
-        plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]))
+        plt.errorbar(pix, fl, yerr=fle, color='orangered', alpha=0.3)
+        plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), zorder=i+2)
     plt.show()
     return mid_pix
 
@@ -91,10 +91,11 @@ for i in range(len(list1)):
 
 list2.sort(key=utl.natural_keys)
 
-f22 = open(p22 + 'positions_1.dat', 'w')
+f22 = open(p22 + 'positions_3.dat', 'w')
+list3 = [list2[7], list2[10], list2[19], list2[12], list2[13], list2[11], list2[14], list2[15]]
 
-for j in range(len(list2)):
-    mid_pix1 = selection(p22, list2[j])
+for j in range(len(list3)):
+    mid_pix1 = selection(p22, list3[j])
     if len(mid_pix1) == 0:
         break
     for k in range(len(mid_pix1)):
