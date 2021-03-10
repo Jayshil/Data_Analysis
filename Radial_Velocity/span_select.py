@@ -75,8 +75,11 @@ def selection(loc, flux_file):
             return yy
         soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
         mid_pix.append(soln.x[0])
-        plt.errorbar(pix, fl, yerr=fle, color='orangered', alpha=0.3)
-        plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), zorder=i+2)
+        plt.errorbar(pix, fl, yerr=fle, color='orangered', alpha=0.3, zorder=1)
+        plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), 'k-', zorder=i+2)
+    plt.grid()
+    plt.xlabel('Pixel')
+    plt.ylabel('Flux')
     plt.show()
     return mid_pix
 
