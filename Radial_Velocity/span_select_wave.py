@@ -107,7 +107,7 @@ def wave_soln(path, fname):
         soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
         mid_pix.append(soln.x[0])
         plt.errorbar(pix, fl, yerr=fle, color='orangered', alpha=0.3, zorder=1)
-        plt.plot(pix, utl.gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), 'k-', zorder=i+2)
+        plt.plot(pix, utl.gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), 'k-', zorder=i+2, alpha=0.5)
 
     mid_wave_pix = np.asarray(mid_pix)
     mid_wave_lam = np.asarray(new_data)
@@ -131,7 +131,7 @@ for i in range(len(list1)):
 list2.sort(key=utl.natural_keys)
 
 for i in range(len(list2)):
-    f23 = open(p22 + list2[i][:-9] + '_wave_cali.dat', 'w')
+    f23 = open(p22 + list2[i][:-9] + '_wave_cali_new.dat', 'w')
     pix2, wave2 = wave_soln(p22, list2[i])
     for j in range(len(pix2)):
         f23.write(str(pix2[j]) + '\t' + str(wave2[j]) + '\n')
