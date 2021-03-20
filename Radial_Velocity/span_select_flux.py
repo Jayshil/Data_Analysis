@@ -51,6 +51,7 @@ def selection(loc, flux_file):
     plt.show()
 
     mid_pix = []
+    mid_pix_err = []
 
     for i in range(len(selection)):
         aa = int(selection[i][0])
@@ -65,7 +66,7 @@ def selection(loc, flux_file):
         #mid_pix.append(pix1[mini1[0][0]])
         #"""
         xinit = np.array([pix1[mini1[0][0]], pix1[-1]-pix1[0], fl1[0], 1])
-        #xinit = np.array([(pix1[0] + pix1[-1])/2, 1, 1, 1])
+        #xinit = np.array([(pix1[0] + pix1[-1])/2, pix1[-1]-pix1[0], fl1[5], 1])
         def min_log_likelihood(x):
             #model = utl.cubic(pix1, x[0], x[1], x[2], x[3])
             model = utl.neg_gaus(pix1, x[0], x[1], x[2], x[3])
@@ -73,15 +74,17 @@ def selection(loc, flux_file):
             chi22 = np.sum(chi2**2)
             yy = np.sum(np.log(fle1)) + 0.5*chi22
             return yy
-        soln = mz(min_log_likelihood, xinit, method='L-BFGS-B')
+        soln = mz(min_log_likelihood, xinit, method='BFGS')
+        covMat=2*soln.hess_inv
         mid_pix.append(soln.x[0])
+        mid_pix_err.append(covMat[0][0])
         plt.errorbar(pix, fl, yerr=fle, color='orangered', alpha=0.3, zorder=1)
         plt.plot(pix, utl.neg_gaus(pix, soln.x[0], soln.x[1], soln.x[2], soln.x[3]), 'k-', zorder=i+2)
     plt.grid()
-    plt.xlabel('Pixel')
+    plt.xlabel('Wavelength')
     plt.ylabel('Flux')
     plt.show()
-    return mid_pix
+    return mid_pix, mid_pix_err
 
 p22 = os.getcwd() + '/Radial_Velocity/Results/'
 
@@ -94,15 +97,19 @@ for i in range(len(list1)):
 
 list2.sort(key=utl.natural_keys)
 
-f22 = open(p22 + 'positions_3.dat', 'w')
-list3 = [list2[7], list2[10], list2[19], list2[12], list2[13], list2[11], list2[14], list2[15]]
+f22 = open(p22 + 'positions_4_n.dat', 'w')
+f33 = open(p22 + 'positions_4_err_n.dat', 'w')
+list3 = [list2[17]]
 
 for j in range(len(list3)):
-    mid_pix1 = selection(p22, list3[j])
+    mid_pix1, mid_pix2 = selection(p22, list3[j])
     if len(mid_pix1) == 0:
         break
     for k in range(len(mid_pix1)):
         f22.write(str(mid_pix1[k]) + '\t')
+        f33.write(str(mid_pix2[k]) + '\t')
     f22.write('\n')
+    f33.write('\n')
 
 f22.close()
+f33.close()
