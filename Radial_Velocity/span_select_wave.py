@@ -131,7 +131,7 @@ for i in range(len(list1)):
 list2.sort(key=utl.natural_keys)
 
 for i in range(len(list2)):
-    f23 = open(p22 + list2[i][:-9] + '_wave_cali_new.dat', 'w')
+    f23 = open(p22 + list2[i][:-9] + '_wave_cali.dat', 'w')
     pix2, wave2 = wave_soln(p22, list2[i])
     for j in range(len(pix2)):
         f23.write(str(pix2[j]) + '\t' + str(wave2[j]) + '\n')
