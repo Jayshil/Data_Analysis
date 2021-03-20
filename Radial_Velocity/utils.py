@@ -55,3 +55,26 @@ def gaus(x, mu, sig, const, aa):
     yy = np.exp(-0.5*((x-mu)/sig)**2)
     zz = aa*yy + const
     return zz
+
+#------------------------------------------------------------------
+#-----------------Wavelength Calibration---------------------------
+#------------------------------------------------------------------
+
+def wave_from_pix(pix):
+    """
+    To compute wavelength from pixel space
+    --------------------------------------
+    Parameters:
+    -----------
+    pix : float, numpy.ndarray
+        pixel space
+    -----------
+    return
+    -----------
+    float, numpy.ndarray
+        wavelength
+    """
+    popt5 = np.array([ 5.85186740e+03, 1.87472777e-02, -6.43063727e-07, -5.82399577e-13])
+    wave2 = cubic(pix, *popt5)
+    return wave2
+    
