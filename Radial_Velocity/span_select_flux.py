@@ -97,9 +97,9 @@ for i in range(len(list1)):
 
 list2.sort(key=utl.natural_keys)
 
-f22 = open(p22 + 'positions_4_n.dat', 'w')
-f33 = open(p22 + 'positions_4_err_n.dat', 'w')
-list3 = [list2[17]]
+f22 = open(p22 + 'positions_4_n2.dat', 'w')
+f33 = open(p22 + 'positions_4_err_n2.dat', 'w')
+list3 = [list2[15]]
 
 for j in range(len(list3)):
     mid_pix1, mid_pix2 = selection(p22, list3[j])
