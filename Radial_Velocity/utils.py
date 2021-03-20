@@ -74,7 +74,7 @@ def wave_from_pix(pix):
     float, numpy.ndarray
         wavelength
     """
-    popt5 = np.array([ 5.85186740e+03, 1.87472777e-02, -6.43063727e-07, -5.82399577e-13])
+    popt5 = np.array([5.85186740e+03, 1.87472777e-02, -6.43063727e-07, -5.82399577e-13])
     wave2 = cubic(pix, *popt5)
     return wave2
     
