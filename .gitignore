@@ -456,3 +456,7 @@ Transits/Fitting/posteriors.pkl
 Transits/Fitting/priors.dat
 Reports/X-ray_data_analysis_Jayshil.pdf
 Reports/Transit_Photometry_Jayshil.pdf
+Extended_photo/Catalogues/HSC_I_COSMOS_1_model_psf_cat.fits
+Extended_photo/Catalogues/HSC_I_COSMOS_2_model_psf_cat.fits
+Extended_photo/Catalogues/HSC_I_COSMOS_3_model_psf_cat.fits
+Extended_photo/Catalogues/HSC_I_COSMOS_4_model_psf_cat.fits
